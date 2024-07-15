@@ -4,17 +4,26 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                script {
+                    writeFile file: 'build.txt', text: 'Building..'
+                    echo 'Building..'
+                }
             }
         }
         stage('Test'){
             steps {
-                echo 'Testing..'
+                script {
+                    writeFile file: 'test.txt', text: 'Testing..'
+                    echo 'Testing..'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                script {
+                    writeFile file: 'deploy.txt', text: 'Deploying....'
+                    echo 'Deploying....'
+                }
             }
         }
     }
