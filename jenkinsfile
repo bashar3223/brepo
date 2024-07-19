@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+   
+
+    stages {
+        stage('preparation') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/mahmoud254/jenkins_nodejs_example.git'
+                
+            }
+        }    
+                stage('ci'){
+                    steps{
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        sh """
+                        docker build . -f dockerfile -t mahmom/iti3monjenkins"
+                        docker login -u ${USERNAME} -p ${PASSWORD}
+                        docker push mahmom/iti3monjenkins
+                        """
+                }
+                }
+            }
+            stage ('cd'){
+                
+                steps{
+                    sh "docker run -d -p  3000:3000 mahmom/iti3monjenkins"
+                }
+            }
+            
+        }
+    }
